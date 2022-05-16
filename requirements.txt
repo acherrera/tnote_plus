@@ -3,3 +3,4 @@ clint
 peewee
 sqlcipher3
 pycrypto
+getkey
