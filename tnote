@@ -1,13 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Author: tasdik
-# @Date:   2016-01-29
-# @Email:  prodicus@outlook.com  Github username: @tasdikrahman
-# @Last Modified by:   tasdik
-# @Last Modified time: 2016-02-05
+# @Author: acherrera
+# @Email: Github username: @acherrera
 # MIT License. You can find a copy of the License
 # @http://prodicus.mit-license.org
-
 # Follows a CRUD approach
 
 from __future__ import print_function
@@ -18,7 +14,6 @@ import os
 import re
 import getpass
 from functools import reduce
-# python3 compatibily, as reduce was moved to functools on python3
 
 
 import hashlib
@@ -27,13 +22,6 @@ from clint.textui import colored, puts
 if os.name != 'nt':
     from playhouse.sqlcipher_ext import SqlCipherDatabase
     from Crypto.Cipher import AES
-
-
-try:
-    input = raw_input   # for python2 compatibility
-except NameError:
-    pass
-
 
 __version__ = '0.0.2'
 path = os.getenv('HOME', os.path.expanduser('~')) + '/.tnote'
@@ -66,12 +54,8 @@ class DiaryEntry(Model):
     class Meta:
         database = db
 
-
 def initialize():
     """Create the table and the database if they don't exist till now"""
-    # os.makedirs(path, exist_ok=True)
-    # ^^ exist_ok is not there in python2
-    # ref: http://stackoverflow.com/a/5032238/3834059
 
     if not os.path.exists(path):
         os.makedirs(path)
@@ -92,18 +76,18 @@ def menu_loop():
     while choice != 'q':
         clear()
         tnote_banner = r"""
-        _________ _        _______ _________ _______ 
-        \__   __/( (    /|(  ___  )\__   __/(  ____ \
-           ) (   |  \  ( || (   ) |   ) (   | (    \/
-           | |   |   \ | || |   | |   | |   | (__    
-           | |   | (\ \) || |   | |   | |   |  __)   
-           | |   | | \   || |   | |   | |   | (      
-           | |   | )  \  || (___) |   | |   | (____/\
-           )_(   |/    )_)(_______)   )_(   (_______/
-            
-                                        - By tasdikrahman(@tasdikrahman)
-                                 
+
+        _________ _        _______ _________ _______       _    
+        \__   __/( (    /|(  ___  )\__   __/(  ____ \     ( )   
+           ) (   |  \  ( || (   ) |   ) (   | (    \/     | |   
+           | |   |   \ | || |   | |   | |   | (__       __| |__ 
+           | |   | (\ \) || |   | |   | |   |  __)     (__   __)
+           | |   | | \   || |   | |   | |   | (           | |   
+           | |   | )  \  || (___) |   | |   | (____/\     | |   
+           )_(   |/    )_)(_______)   )_(   (_______/     (_)   
+                                        - By acherrera(@acherrera)
         """
+
         puts(colored.yellow(tnote_banner))
         puts(colored.red("\nEnter 'q' to quit"))
         for key, value in menu.items():
