@@ -13,7 +13,11 @@
                                )_(   |/    )_)(_______)   )_(   (_______/
 ```
 
-A dead simple command line note taking app built for you!
+A dead simple command line note taking app built for you! The original project lives here:
+https://github.com/tasdikrahman/tnote
+
+At the time of forking the project, there had been not updates in 4 years with 11 issues. I thought it was interesting
+enough to at least fork it and give it a shot. 
 
 ## Index
 
@@ -29,7 +33,6 @@ A dead simple command line note taking app built for you!
   - [Contributers](#contributers)
 - [Issues](#issues)
 - [License](#license)
-- [Donation](#donation)
 
 ## Demo
 [:arrow_up: Back to top](#index)
@@ -50,7 +53,7 @@ Watch a live demo of it working here
 - **Secure**: Encrypts your database using standard **AES-256 in CBC mode**. So even if anybody gets hand of your database file. He cannot make any sense of it. [A little demo of what I am doing using it](https://github.com/tasdikrahman/tnote/wiki/So-you-say-it-is-encrypted-eh%3F)
 
 **NOTE**
-  _This feature is available/tested only on linux based systems. Support for other OS's coming soon!_
+  _This was built and testing in Linux - use on other OS's at your own risk_
 
 - **Text Highlighting is cross platform** - Supports Linux, Windows, MAC for the terminal based highlighting.
 - **Searching for notes is hassle free** in `tnote`: It supports full text search for notes based on _content_, _tags_
@@ -148,13 +151,15 @@ This app was created in a timespan of 2 hours while learning to use [peewee (ORM
 
 A big shout out to all the contributers, more specifically to these guys
 
+* OG contributers: 
 - [@maxwellgerber](https://github.com/maxwellgerber)
 - [@BrandtM](https://github.com/BrandtM)
 
 ## Motivation
 [:arrow_up: Back to top](#index)
 
-Why not! Cheers to a crazy weekend :smile:
+Original project had not had updates for 4 years, so I thought I would try my hand at understanding what was going on
+and expanding upon the project.
 
 ***
 
@@ -163,28 +168,10 @@ Why not! Cheers to a crazy weekend :smile:
 
 You can report the bugs at the [issue tracker](https://github.com/tasdikrahman/tnote/issues)
 
-**OR**
-
-You can [tweet me](https://twitter.com/tasdikrahman) if you can't get it to work. In fact, you should tweet me anyway.
-
 ***
 
 ## License
 [:arrow_up: Back to top](#index)
 
-Built with ♥ and after a lot of pizzas by [Tasdik Rahman](http://tasdikrahman.me) under [MIT License](http://prodicus.mit-license.org)
-
 You can find a copy of the License at http://prodicus.mit-license.org/
 
-## Donation
-[:arrow_up: Back to top](#index)
-
-If you have found my little bits of software being of any use to you, do consider helping me pay my internet bills :)
-
-| PayPal | <a href="https://paypal.me/tasdik" target="_blank"><img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" alt="Donate via PayPal!" title="Donate via PayPal!" /></a> |
-|:-------------------------------------------:|:-------------------------------------------------------------:|
-| Gratipay  | <a href="https://gratipay.com/tasdikrahman/" target="_blank"><img src="https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png" alt="Support via Gratipay" title="Support via Gratipay" /></a> |
-| Patreon | <a href="https://www.patreon.com/tasdikrahman" target="_blank"><img src="http://i.imgur.com/ICWPFOs.png" alt="Support me on Patreon" title="Support me on Patreon" /></a> |
-| £ (GBP) | <a href="https://transferwise.com/pay/d804d854-6862-4127-afdd-4687d64cbd28" target="_blank"><img src="http://i.imgur.com/ARJfowA.png" alt="Donate via TransferWise!" title="Donate via TransferWise!" /></a> |
-| € Euros | <a href="https://transferwise.com/pay/64c586e3-ec99-4be8-af0b-59241f7b9b79" target="_blank"><img src="http://i.imgur.com/ARJfowA.png" alt="Donate via TransferWise!" title="Donate via TransferWise!" /></a> |
-| ₹ (INR)  | <a href="https://www.instamojo.com/@tasdikrahman" target="_blank"><img src="https://www.soldermall.com/images/pic-online-payment.jpg" alt="Donate via instamojo" title="Donate via instamojo" /></a> |
