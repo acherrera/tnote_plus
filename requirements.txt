@@ -1,6 +1,6 @@
-args
-clint
-peewee
-sqlcipher3
-pycrypto
-getkey
+args==0.1.0
+clint==0.5.1
+peewee==3.14.10
+sqlcipher3==0.4.5
+pycrypto==2.6.1
+getkey==0.6.5
