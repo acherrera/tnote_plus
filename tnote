@@ -247,7 +247,9 @@ def search_entries():
         puts(colored.green("q) Return to the main menu"))
         puts(colored.yellow("==============================="))
         print("Action [c/t/q] : ", end="")
-        query_selector = input("").lower()
+
+        query_selector = get_keystroke()
+        query_selector = query_selector.lower()
         if query_selector == "t":
             view_entry(input("Enter a search Query: "), search_content=False)
             break
