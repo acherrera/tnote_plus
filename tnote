@@ -72,12 +72,15 @@ def initialize():
 
 def get_keystroke():
     """
-    gets the keystroke from the user without making them press enter
+    Gets keystroke from user and remove casing
     """
     key = None
     while not key:
         key=getkey()
-        return key
+        if isinstance(key, str):
+            return key.lower()
+        else:
+            return key
 
 def menu_loop():
     """To display the diary menu"""
@@ -120,7 +123,6 @@ def clear():
 def add_entry():
     """Adds an entry to the diary"""
     title_string = "Title (press {} when finished)".format(finish_key)
-    # print(title_string)
     puts(colored.yellow(title_string))
     puts(colored.green("="*len(title_string)))
     title = sys.stdin.read().strip()
@@ -137,13 +139,15 @@ def add_entry():
             tags = processTags(tags)
             puts(colored.green("\n"+"="*len(entry_string)))
             # anything other than 'n'
-            if input("\nSave entry (y/n) : ").lower() != 'n':
+            print("\nSave entry (y/n) : ").lower() 
+            choice = get_keystroke()
+            if choice != 'n':
                 DiaryEntry.create(content=data, tags=tags, title=title)
                 puts(colored.green("Saved successfully"))
     else:
         puts(
             colored.red("No title entered! Press Enter to return to main menu"))
-        input()
+        get_keystroke()
         clear()
         return
 
@@ -161,7 +165,7 @@ def view_entry(search_query=None, search_content=True):
     if not entries:
         puts(colored.red(
             "\nYour search had no results. Press enter to return to the main menu!"))
-        input()
+        get_keystroke()
         clear()
         return
 
@@ -207,7 +211,7 @@ def view_entry(search_query=None, search_content=True):
         print('q) to return to main menu')
 
         print('Action: [n/p/q/d] : ')
-        next_action = get_keystroke().lower().strip()
+        next_action = get_keystroke().strip()
 
         if next_action == 'q':
             break
@@ -249,8 +253,8 @@ def search_entries():
         print("Action [c/t/q] : ", end="")
 
         query_selector = get_keystroke()
-        query_selector = query_selector.lower()
         if query_selector == "t":
+
             view_entry(input("Enter a search Query: "), search_content=False)
             break
         elif query_selector == "c":
@@ -269,7 +273,9 @@ def delete_entry(entry):
     # reading it in from the 'view_entry' method so here it is
     
     puts(colored.red("Are you sure (y/n) : "))
-    if input().lower().strip() == 'y':
+    choice = get_keystroke()
+    choice = choice.strip()
+    if choice.lower().strip() == 'y':
         entry.delete_instance()
         puts(colored.green("Entry was deleted!"))
 
