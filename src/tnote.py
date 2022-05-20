@@ -24,26 +24,6 @@ if os.name != 'nt':
     from playhouse.sqlcipher_ext import SqlCipherDatabase
     from Crypto.Cipher import AES
 
-__version__ = '0.0.2'
-path = os.getenv('HOME', os.path.expanduser('~')) + '/.tnote'
-
-# Makes sure that the length of a string is a multiple of 32. Otherwise it
-# is padded with the '^' character
-pad_string = lambda s: s + (32 - len(s) % 32) * '^'
-
-if os.name != 'nt':
-    password = getpass.getpass("Please enter your key: ")
-    key = hashlib.sha256(password.encode('utf-8')).digest()
-    cryptor = AES.new(key)
-    passphrase = getpass.getpass("Please enter your passphrase: ")
-    crypted_pass = cryptor.encrypt(pad_string(passphrase))
-    db = SqlCipherDatabase(path + '/diary.db', passphrase=str(crypted_pass))
-else:
-    db = SqliteDatabase(path + '/diary.db')
-
-finish_key = "ctrl+Z" if os.name == 'nt' else "ctrl+D"
-
-
 class DiaryEntry(Model):
 
     """The main Diray Model"""
@@ -52,11 +32,34 @@ class DiaryEntry(Model):
     timestamp = DateTimeField(default=datetime.datetime.now)
     tags = CharField()
 
-    class Meta:
-        database = db
+    # class Meta:
+    #     database = db
 
 def initialize():
-    """Create the table and the database if they don't exist till now"""
+    """Load the database and creates it if it doesn't exist"""
+
+    __version__ = '0.0.2'
+    path = os.getenv('HOME', os.path.expanduser('~')) + '/.tnote'
+
+    # Makes sure that the length of a string is a multiple of 32. Otherwise it
+    # is padded with the '^' character
+    pad_string = lambda s: s + (32 - len(s) % 32) * '^'
+
+    if os.name != 'nt':
+        password = getpass.getpass("Please enter your key: ")
+        key = hashlib.sha256(password.encode('utf-8')).digest()
+        cryptor = AES.new(key)
+        passphrase = getpass.getpass("Please enter your passphrase: ")
+        crypted_pass = cryptor.encrypt(pad_string(passphrase))
+        db = SqlCipherDatabase(path + '/diary.db', passphrase=str(crypted_pass))
+    else:
+        db = SqliteDatabase(path + '/diary.db')
+
+    finish_key = "ctrl+Z" if os.name == 'nt' else "ctrl+D"
+
+
+
+
 
     if not os.path.exists(path):
         os.makedirs(path)
@@ -136,7 +139,7 @@ def add_entry():
             puts(colored.yellow("\nEnter comma separated tags(if any!): (press {} when finished) : ".format(finish_key)))
             puts(colored.green("="*(len(title_string)+33)))
             tags = sys.stdin.read().strip()
-            tags = processTags(tags)
+            tags = process_tags(tags)
             puts(colored.green("\n"+"="*len(entry_string)))
             # anything other than 'n'
             print("\nSave entry (y/n) : ").lower() 
@@ -280,16 +283,22 @@ def delete_entry(entry):
         puts(colored.green("Entry was deleted!"))
 
 
-def processTags(tag):
-    """Cleans up tag string, removes duplicates, etc."""
-    tagList = tag.split(',')
-    newTagList = [tag.strip() for tag in tagList if tag]
-    return ','.join(sorted(set(newTagList)))
+def process_tags(tag: str)->str:
+    """
+    Takes a string of comma separated tags, convert to a list of strings and removes leading and trailing spaces
+    Args:
+        tag: tag values to process. Example "todo  , later, new,"
+    Returns:
+        list of values with spaces removed. Example "todo,later,new"
+    """
+    cleaned_tags = tag.split(',')
+    cleaned_tags = [tag.strip() for tag in tag_list if tag]
+    return ','.join(sorted(set(cleaned_tags)))
 
 
 def add_tag(entry, tag):
     tagList = entry.tags.split(',')
-    newTagList = processTags(tag).split(',')
+    newTagList = process_tags(tag).split(',')
     for tag in newTagList:
         if(tagList.count(tag) == 0):
             tagList.append(tag)
@@ -301,7 +310,7 @@ def add_tag(entry, tag):
 
 def remove_tag(entry, tag):
     tagList = entry.tags.split(',')
-    newTagList = processTags(tag).split(',')
+    newTagList = process_tags(tag).split(',')
     for tag in newTagList:
         try:
             tagList.remove(tag)
@@ -320,11 +329,9 @@ menu = OrderedDict([
 
 if __name__ == "__main__":
     initialize()
+
     try:
         menu_loop()
     except KeyboardInterrupt:
         clear()
         sys.exit(0)
-
-    # key = get_keystroke()
-    # print(f"Your key: {key}")
