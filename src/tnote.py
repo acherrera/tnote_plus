@@ -24,6 +24,29 @@ if os.name != 'nt':
     from playhouse.sqlcipher_ext import SqlCipherDatabase
     from Crypto.Cipher import AES
 
+ENV = os.environ.get("ENV")
+
+__version__ = '0.0.2'
+DB_PATH = os.getenv('HOME', os.path.expanduser('~')) + '/.tnote'
+
+# Makes sure that the length of a string is a multiple of 32. Otherwise it
+# is padded with the '^' character
+pad_string = lambda s: s + (32 - len(s) % 32) * '^'
+
+if ENV == "test":
+    DB_PATH = "/tmp/tnote_testing/"
+    db = SqliteDatabase(DB_PATH + '/diary.db')
+else:
+    password = getpass.getpass("Please enter your key: ")
+    key = hashlib.sha256(password.encode('utf-8')).digest()
+    cryptor = AES.new(key)
+    passphrase = getpass.getpass("Please enter your passphrase: ")
+    crypted_pass = cryptor.encrypt(pad_string(passphrase))
+    db = SqlCipherDatabase(DB_PATH + '/diary.db', passphrase=str(crypted_pass))
+
+finish_key = "ctrl+Z" if os.name == 'nt' else "ctrl+D"
+
+
 class DiaryEntry(Model):
 
     """The main Diray Model"""
@@ -32,37 +55,15 @@ class DiaryEntry(Model):
     timestamp = DateTimeField(default=datetime.datetime.now)
     tags = CharField()
 
-    # class Meta:
-    #     database = db
+    class Meta:
+        database = db
 
 def initialize():
     """Load the database and creates it if it doesn't exist"""
 
-    __version__ = '0.0.2'
-    path = os.getenv('HOME', os.path.expanduser('~')) + '/.tnote'
 
-    # Makes sure that the length of a string is a multiple of 32. Otherwise it
-    # is padded with the '^' character
-    pad_string = lambda s: s + (32 - len(s) % 32) * '^'
-
-    if os.name != 'nt':
-        password = getpass.getpass("Please enter your key: ")
-        key = hashlib.sha256(password.encode('utf-8')).digest()
-        cryptor = AES.new(key)
-        passphrase = getpass.getpass("Please enter your passphrase: ")
-        crypted_pass = cryptor.encrypt(pad_string(passphrase))
-        db = SqlCipherDatabase(path + '/diary.db', passphrase=str(crypted_pass))
-    else:
-        db = SqliteDatabase(path + '/diary.db')
-
-    finish_key = "ctrl+Z" if os.name == 'nt' else "ctrl+D"
-
-
-
-
-
-    if not os.path.exists(path):
-        os.makedirs(path)
+    if not os.path.exists(DB_PATH):
+        os.makedirs(DB_PATH)
     try:
         db.connect()
         db.create_tables([DiaryEntry], safe=True)
@@ -292,7 +293,7 @@ def process_tags(tag: str)->str:
         list of values with spaces removed. Example "todo,later,new"
     """
     cleaned_tags = tag.split(',')
-    cleaned_tags = [tag.strip() for tag in tag_list if tag]
+    cleaned_tags = [tag.strip() for tag in cleaned_tags if tag]
     return ','.join(sorted(set(cleaned_tags)))
 
 

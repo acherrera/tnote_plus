@@ -1,3 +1,6 @@
+
+import os
+os.environ["ENV"] = "test"
 from src.tnote import (
         process_tags
 )
@@ -35,4 +38,3 @@ class TestProcessTags(unittest.TestCase):
         output = output.split(",")
         expected_tags = expected_tags.split(",")
         self.assertCountEqual(expected_tags, output)
-
