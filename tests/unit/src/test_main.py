@@ -5,6 +5,7 @@ from src.tnote import (
         process_tags
 )
 import unittest
+from unittest.mock import patch
 
 class TestProcessTags(unittest.TestCase):
     def setUp(self):
@@ -36,3 +37,14 @@ class TestProcessTags(unittest.TestCase):
         output = output.split(",")
         expected_tags = expected_tags.split(",")
         self.assertCountEqual(expected_tags, output)
+
+class TestGetKeys(unittest.TestCase):
+    def setUp(self):
+        patcher1 = patch("src.tnote.getkey")
+        self.mock_get_key = patcher1.start()
+        self.addCleanup(patcher1.stop)
+
+
+    def test_simple(self):
+        #TODO
+        pass
