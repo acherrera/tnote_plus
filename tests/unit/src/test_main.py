@@ -5,8 +5,6 @@ from src.tnote import (
         process_tags
 )
 import unittest
-import pandas as pd
-
 
 class TestProcessTags(unittest.TestCase):
     def setUp(self):
