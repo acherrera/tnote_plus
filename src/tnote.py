@@ -143,7 +143,7 @@ def add_entry():
             tags = process_tags(tags)
             puts(colored.green("\n"+"="*len(entry_string)))
             # anything other than 'n'
-            print("\nSave entry (y/n) : ").lower() 
+            print("\nSave entry (y/n) : ") 
             choice = get_keystroke()
             if choice != 'n':
                 DiaryEntry.create(content=data, tags=tags, title=title)
