@@ -1,1 +1,4 @@
 pytest
+black
+pudb
+wheel
