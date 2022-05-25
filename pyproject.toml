@@ -1,7 +1,7 @@
 
 [tool.poetry]
 name = "tnote_plus"
-version = "0.0.5"
+version = "0.0.6"
 description = "simple CLI notetaking"
 authors = ["Anthony Herrera <anthonyherrera24@gmail.com>"]
 readme = "README.md"
@@ -30,5 +30,5 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-tnote = './src/tnote.py:main'
+tnote = './tnote_plus/tnote.py:main'
 
