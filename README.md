@@ -137,6 +137,12 @@ Dependencies are managed with [Python Poetry](https://python-poetry.org/). This 
 
 Install poetry with `curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -`
 
+### Deployment
+
+`poetry build` will build the project.
+
+`poetry publish` will publish the package to a repository.
+
 #### To-do
     
 - [ ] Add **unit tests**. Like real quick!
