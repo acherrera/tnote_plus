@@ -1,10 +1,15 @@
-readme = "README.md"
 
 [tool.poetry]
 name = "tnote_plus"
-version = "0.0.4"
+version = "0.0.5"
 description = "simple CLI notetaking"
 authors = ["Anthony Herrera <anthonyherrera24@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+keywords = ["python3", "notetaking", "local"]
+homepage = "https://github.com/acherrera/tnote_plus"
+repository = "https://github.com/acherrera/tnote_plus"
+
 
 [tool.poetry.dependencies]
 python = "^3.8"
