@@ -128,7 +128,14 @@ Fire it up! :volcano:
 ## Contributing
 [:arrow_up: Back to top](#index)
 
-This app was created in a timespan of 2 hours while learning to use [peewee (ORM)](https://github.com/coleifer/peewee). So don't be shy to make some PR's here :smile:
+This project was originally created in a few hours and utilizes [peewee (ORM)](https://github.com/coleifer/peewee). It
+was then forked by acherrera to do more work. 
+
+### Dependencies
+
+Dependencies are managed with [Python Poetry](https://python-poetry.org/). This is also used to publish the package.
+
+Install poetry with `curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -`
 
 #### To-do
     
