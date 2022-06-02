@@ -31,4 +31,3 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 tnote = './src/tnote.py:main'
-

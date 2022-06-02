@@ -47,7 +47,6 @@ else:
 
 finish_key = "ctrl+Z" if os.name == "nt" else "ctrl+D"
 
-
 class DiaryEntry(Model):
 
     """The main Diray Model"""
@@ -341,7 +340,15 @@ def add_tag(entry, tag):
             puts(colored.red("Tag already present"))
 
 
-def remove_tag(entry, tag):
+def remove_tag(entry: DiaryEntry, tag: str):
+    """
+    Removes the given tag from the given entry. This is accomplishbed by pulling the existing tags, converting them to a
+    listand remove the value that matches "tag" above.
+    Args:
+        entry: Diary Entry object to modify
+    Returns:
+        None - updates the values
+    """
     tagList = entry.tags.split(",")
     newTagList = process_tags(tag).split(",")
     for tag in newTagList:

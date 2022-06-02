@@ -2,13 +2,13 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 # Example of deploying with poetry: https://testdriven.io/tips/810f9bb5-c9df-479d-baa4-290c7e0779f1/
 
-name: Python package
+name: Python Code Tests
 
 on:
   push:
-    branches: [ dev, deployment]
+    branches: [dev]
   pull_request:
-    branches: [ dev, deployment]
+    branches: [dev]
 
 jobs:
   build:
