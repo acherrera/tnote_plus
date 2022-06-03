@@ -1,16 +1,16 @@
 ## tnote
 
-[![GitHub license](https://img.shields.io/pypi/l/pyzipcode-cli.svg)](https://img.shields.io/pypi/l/pyzipcode-cli.svg) [![Supported python versions](https://img.shields.io/pypi/pyversions/Django.svg)]([![PyPI](https://img.shields.io/pypi/pyversions/Django.svg)]()) [![Join the chat at https://gitter.im/prodicus/tnote](https://badges.gitter.im/prodicus/tnote.svg)](https://gitter.im/prodicus/tnote?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![GitHub license](https://img.shields.io/pypi/l/pyzipcode-cli.svg)](https://img.shields.io/pypi/l/pyzipcode-cli.svg) [![Supported python versions](https://img.shields.io/pypi/pyversions/Django.svg)]([![PyPI](https://img.shields.io/pypi/pyversions/Django.svg)]())
 
 ```
-                            _________ _        _______ _________ _______       _    
-                            \__   __/( (    /|(  ___  )\__   __/(  ____ \     ( )   
-                               ) (   |  \  ( || (   ) |   ) (   | (    \/     | |   
-                               | |   |   \ | || |   | |   | |   | (__       __| |__ 
-                               | |   | (\ \) || |   | |   | |   |  __)     (__   __)
-                               | |   | | \   || |   | |   | |   | (           | |   
-                               | |   | )  \  || (___) |   | |   | (____/\     | |   
-                               )_(   |/    )_)(_______)   )_(   (_______/     (_)   
+            _________ _        _______ _________ _______       _    
+            \__   __/( (    /|(  ___  )\__   __/(  ____ \     ( )   
+                ) (   |  \  ( || (   ) |   ) (   | (    \/     | |   
+                | |   |   \ | || |   | |   | |   | (__       __| |__ 
+                | |   | (\ \) || |   | |   | |   |  __)     (__   __)
+                | |   | | \   || |   | |   | |   | (           | |   
+                | |   | )  \  || (___) |   | |   | (____/\     | |   
+                )_(   |/    )_)(_______)   )_(   (_______/     (_)   
                                                                                     
 ```
 
@@ -128,7 +128,20 @@ Fire it up! :volcano:
 ## Contributing
 [:arrow_up: Back to top](#index)
 
-This app was created in a timespan of 2 hours while learning to use [peewee (ORM)](https://github.com/coleifer/peewee). So don't be shy to make some PR's here :smile:
+This project was originally created in a few hours and utilizes [peewee (ORM)](https://github.com/coleifer/peewee). It
+was then forked by acherrera to do more work. 
+
+### Dependencies
+
+Dependencies are managed with [Python Poetry](https://python-poetry.org/). This is also used to publish the package.
+
+Install poetry with `curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -`
+
+### Deployment
+
+`poetry build` will build the project.
+
+`poetry publish` will publish the package to a repository.
 
 #### To-do
     

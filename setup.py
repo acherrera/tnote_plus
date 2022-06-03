@@ -29,7 +29,6 @@ setup(
     # specification here:
     # https://packaging.python.org/specifications/core-metadata/#name
     name="tnote_plus",  # Required
-
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
     #
@@ -37,12 +36,10 @@ setup(
     # project code, see
     # https://packaging.python.org/guides/single-sourcing-package-version/
     version="0.0.1",  # Required
-
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
     description="Dead Simple CLI Note Taking With Python",  # Optional
-
     # This is an optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
     #
@@ -52,7 +49,6 @@ setup(
     # This field corresponds to the "Description" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#description-optional
     long_description=long_description,  # Optional
-
     # Denotes that our long_description is in Markdown; valid values are
     # text/plain, text/x-rst, and text/markdown
     #
@@ -64,21 +60,17 @@ setup(
     # This field corresponds to the "Description-Content-Type" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#description-content-type-optional
     long_description_content_type="text/markdown",  # Optional (see note above)
-
     # This should be a valid link to your project's main homepage.
     #
     # This field corresponds to the "Home-Page" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#home-page-optional
     url="https://github.com/acherrera/tnote_plus",  # Optional
-
     # This should be your name or the name of the organization which owns the
     # project.
     author="Anthony Herrera",  # Optional
-
     # This should be a valid email address corresponding to the author listed
     # above.
     author_email="anthonyherrera24@gmail.com",  # Optional
-
     # Classifiers help users find your project by categorizing it.
     #
     # For a list of valid classifiers, see https://pypi.org/classifiers/
@@ -103,7 +95,6 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3 :: Only",
     ],
-
     # This field adds keywords for your project which will appear on the
     # project page. What does your project relate to?
     #
@@ -111,11 +102,9 @@ setup(
     # by commas, to be used to assist searching for the distribution in a
     # larger catalog.
     # keywords="sample, setuptools, development",  # Optional
-
     # When your source code is in a subdirectory under the project root, e.g.
     # `src/`, it is necessary to specify the `package_dir` argument.
     # package_dir={"": "src"},  # Optional
-
     # You can just specify package directories manually here if your project is
     # simple. Or you can use find_packages().
     #
@@ -125,13 +114,11 @@ setup(
     #
     #   py_modules=["my_module"],
     packages=find_packages(where="src"),  # Required
-
     # Specify which Python versions you support. In contrast to the
     # 'Programming Language' classifiers above, 'pip install' will check this
     # and refuse to install the project if the version does not match. See
     # https://packaging.python.org/guides/distributing-packages-using-setuptools/#python-requires
     python_requires=">=3.6, <4",
-
     # This field lists other packages that your project depends on to run.
     # Any package you put here will be installed by pip when your project is
     # installed, so they must be valid existing projects.
@@ -139,13 +126,12 @@ setup(
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/discussions/install-requires-vs-requirements/
     install_requires=[
-            "args==0.1.0",
-            "clint==0.5.1",
-            "peewee==3.14.10",
-            "pycrypto==2.6.1",
-            "pysqlcipher3"
-            ],
-
+        "args==0.1.0",
+        "clint==0.5.1",
+        "peewee==3.14.10",
+        "pycrypto==2.6.1",
+        "pysqlcipher3",
+    ],
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
     # syntax, for example:
@@ -158,20 +144,17 @@ setup(
         "dev": ["check-manifest"],
         "test": ["coverage"],
     },
-
     # If there are data files included in your packages that need to be
     # installed, specify them here.
     # package_data={  # Optional
     #     "sample": ["package_data.dat"],
     # },
-
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:
     # http://docs.python.org/distutils/setupscript.html#installing-additional-files
     #
     # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
     # data_files=[("my_data", ["data/data_file"])],  # Optional
-
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # `pip` to create the appropriate form of executable for the target
@@ -184,7 +167,6 @@ setup(
     #         "sample=sample:main",
     #     ],
     # },
-
     # List additional URLs that are relevant to your project as a dict.
     #
     # This field corresponds to the "Project-URL" metadata fields:
