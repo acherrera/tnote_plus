@@ -119,8 +119,10 @@ def menu_loop():
         console.print(tnote_banner, style=HEADER, highlight=False)
         console.print("\nEnter 'q' to quit", style=ACTION)
         for key, value in menu.items():
-            console.print("[green_yellow]{}[/green_yellow] : {}".format(key, value.__doc__))
-        console.print("Action: ",style=ACTION)
+            console.print(
+                "[green_yellow]{}[/green_yellow] : {}".format(key, value.__doc__)
+            )
+        console.print("Action: ", style=ACTION)
         choice = get_keystroke()
         choice = choice.lower().strip()
 
@@ -218,36 +220,31 @@ def view_entry(search_query=None, search_content=True):
             )
             line = reduce(
                 lambda x, y: x + y,
-                [
-                    b
-                    if b.lower() == search_query.lower()
-                    else b
-                    for b in bits
-                ],
+                [b if b.lower() == search_query.lower() else b for b in bits],
             )
             console.print(line)
         else:
             console.print(entry.content)
 
         console.print(
-            ("\nTags: {}".format(entry.tags))
-            if entry.tags
-            else "\nNo tags supplied"
+            ("\nTags: {}".format(entry.tags)) if entry.tags else "\nNo tags supplied"
         )
         console.print("\n\n" + "=" * len(head))
         console.print("Viewing note " + str(index + 1) + " of " + str(size + 1))
 
         menu_options = {
-            "n":  "next entry",
-            "p":  "previous entry",
-            "d":  "delete entry",
-            "t":  "add tag(s)",
-            "r":  "remove tag(s)",
-            "q":  "to return to main menu"
-            }
+            "n": "next entry",
+            "p": "previous entry",
+            "d": "delete entry",
+            "t": "add tag(s)",
+            "r": "remove tag(s)",
+            "q": "to return to main menu",
+        }
 
         for key, value in menu_options.items():
-            console.print(f"[green_yellow]{key}[/green_yellow] : {value}", highlight=False)
+            console.print(
+                f"[green_yellow]{key}[/green_yellow] : {value}", highlight=False
+            )
 
         console.print("Action: [n/p/q/d] : ")
         next_action = get_keystroke().strip()
@@ -269,15 +266,11 @@ def view_entry(search_query=None, search_content=True):
             else:
                 index -= 1
         elif next_action == "t":
-            console.print(
-                "\nEnter tag(s): (press %s when finished) : " % finish_key
-            )
+            console.print("\nEnter tag(s): (press %s when finished) : " % finish_key)
             new_tag = sys.stdin.read().strip()
             add_tag(entry, new_tag)
         elif next_action == "r":
-            console.print(
-                "\nEnter tag(s): (press %s when finished) : " % finish_key
-            )
+            console.print("\nEnter tag(s): (press %s when finished) : " % finish_key)
             new_tag = sys.stdin.read().strip()
             remove_tag(entry, new_tag)
 
