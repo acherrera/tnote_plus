@@ -18,7 +18,7 @@ peewee = "^3.14.10"
 sqlcipher3 = "^0.4.5"
 pycrypto = "^2.6.1"
 getkey = "^0.6.5"
-colorama = "^0.4.4"
+rich = "^12.4.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"

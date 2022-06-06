@@ -6,7 +6,6 @@
 # @http://prodicus.mit-license.org
 # Follows a CRUD approach
 
-from __future__ import print_function
 from collections import OrderedDict
 import sys
 import datetime
@@ -19,7 +18,15 @@ from getkey import getkey, keys
 
 import hashlib
 from peewee import *
-from colorama import Fore
+from rich.console import Console
+from rich.style import Style
+
+console = Console()
+
+HEADER = Style(color="deep_sky_blue3", bgcolor="black")
+QUITTER = Style(color="orange_red1", bgcolor="black")
+MENU = Style(color="green_yellow", bgcolor="black")
+
 
 if os.name != "nt":
     from playhouse.sqlcipher_ext import SqlCipherDatabase
@@ -27,7 +34,7 @@ if os.name != "nt":
 
 ENV = os.environ.get("ENV")
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 DB_PATH = os.getenv("HOME", os.path.expanduser("~")) + "/.tnote"
 
 # Makes sure that the length of a string is a multiple of 32. Otherwise it
@@ -45,7 +52,7 @@ else:
     crypted_pass = cryptor.encrypt(pad_string(passphrase))
     db = SqlCipherDatabase(DB_PATH + "/diary.db", passphrase=str(crypted_pass))
 
-finish_key = "ctrl+Z" if os.name == "nt" else "ctrl+D"
+finish_key = "<enter>"
 
 
 class DiaryEntry(Model):
@@ -70,7 +77,7 @@ def initialize():
         db.connect()
         db.create_tables([DiaryEntry], safe=True)
     except DatabaseError:
-        print(
+        console.print(
             "Your key and/or passphrase were incorrect.\n \
             Please restart the application and try again!"
         )
@@ -106,14 +113,14 @@ def menu_loop():
            | |   | | \   || |   | |   | |   | (           | |   
            | |   | )  \  || (___) |   | |   | (____/\     | |   
            )_(   |/    )_)(_______)   )_(   (_______/     (_)   
-                                        - By acherrera(@acherrera)
         """
+        tnote_banner += f"   version: {__version__} by acherrera"
 
-        print(Fore.YELLOW + tnote_banner)
-        print(Fore.RED + "\nEnter 'q' to quit")
+        console.print(tnote_banner, style=HEADER, highlight=False)
+        console.print("\nEnter 'q' to quit", style=QUITTER)
         for key, value in menu.items():
-            print(Fore.GREEN + "{}) {} : ".format(key, value.__doc__))
-        print("Action: ")
+            console.print("{}) {} : ".format(key, value.__doc__), style=MENU, highlight=False)
+        console.print("Action: ")
         choice = get_keystroke()
         choice = choice.lower().strip()
 
@@ -131,37 +138,36 @@ def clear():
 def add_entry():
     """Adds an entry to the diary"""
     title_string = "Title: ".format(finish_key)
-    print(Fore.YELLOW + title_string)
-    print(Fore.GREEN + "=" * len(title_string))
+    console.print(title_string)
+    console.print("=" * len(title_string))
     # title = sys.stdin.read().strip()
     title = input()
     if title:
-        entry_string = "\nEnter your entry: (press {} when finished)".format(finish_key)
-        print(Fore.YELLOW + entry_string)
-        print(Fore.GREEN + "=" * len(entry_string))
+        entry_string = "\nEnter your entry: ".format(finish_key)
+        console.print(entry_string)
+        console.print("=" * len(entry_string))
         # reads all the data entered from the user
         # data = sys.stdin.read().strip()
         data = input()
         if data:  # if something was actually entered
-            print(
-                Fore.YELLOW
-                + "\nEnter comma separated tags(if any!): (press {} when finished) : ".format(
+            console.print(
+                "\nEnter comma separated tags(if any!): (press {} when finished) : ".format(
                     finish_key
                 )
             )
-            print(Fore.GREEN + "=" * (len(title_string) + 33))
+            console.print("=" * (len(title_string) + 33))
             # tags = sys.stdin.read().strip()
             tags = input()
             tags = process_tags(tags)
-            print(Fore.GREEN + "\n" + "=" * len(entry_string))
+            console.print("\n" + "=" * len(entry_string))
             # anything other than 'n'
-            print("\nSave entry (y/n) : ")
+            console.print("\nSave entry (y/n) : ")
             choice = get_keystroke()
             if choice != "n":
                 DiaryEntry.create(content=data, tags=tags, title=title)
-                print(Fore.GREEN + "Saved successfully")
+                console.print("Saved successfully")
     else:
-        print(Fore.RED + "No title entered! Press Enter to return to main menu")
+        console.print("No title entered! Press Enter to return to main menu")
         get_keystroke()
         clear()
         return
@@ -178,9 +184,8 @@ def view_entry(search_query=None, search_content=True):
 
     entries = list(entries)
     if not entries:
-        print(
-            Fore.RED
-            + "\nYour search had no results. Press enter to return to the main menu!"
+        console.print(
+            "\nYour search had no results. Press enter to return to the main menu!"
         )
         get_keystroke()
         clear()
@@ -204,8 +209,8 @@ def view_entry(search_query=None, search_content=True):
         head = '"{title}" on "{timestamp}"'.format(
             title=entry.title, timestamp=timestamp
         )
-        print(Fore.GREEN + head)
-        print(Fore.GREEN + "=" * len(head))
+        console.print(head)
+        console.print("=" * len(head))
 
         if search_query and search_content:
             bits = re.compile("(%s)" % re.escape(search_query), re.IGNORECASE).split(
@@ -214,32 +219,32 @@ def view_entry(search_query=None, search_content=True):
             line = reduce(
                 lambda x, y: x + y,
                 [
-                    Fore.CYAN + b
+                    b
                     if b.lower() == search_query.lower()
-                    else Fore.YELLOW + b
+                    else b
                     for b in bits
                 ],
             )
-            print(line)
+            console.print(line)
         else:
-            print(Fore.YELLOW + entry.content)
+            console.print(entry.content)
 
-        print(
-            Fore.MAGENTA + ("\nTags: {}".format(entry.tags))
+        console.print(
+            ("\nTags: {}".format(entry.tags))
             if entry.tags
             else "\nNo tags supplied"
         )
-        print(Fore.GREEN + "\n\n" + "=" * len(head))
-        print(Fore.YELLOW + "Viewing note " + str(index + 1) + " of " + str(size + 1))
+        console.print("\n\n" + "=" * len(head))
+        console.print("Viewing note " + str(index + 1) + " of " + str(size + 1))
 
-        print("n) next entry")
-        print("p) previous entry")
-        print("d) delete entry")
-        print("t) add tag(s)")
-        print("r) remove tag(s)")
-        print("q) to return to main menu")
+        console.print("n) next entry")
+        console.print("p) previous entry")
+        console.print("d) delete entry")
+        console.print("t) add tag(s)")
+        console.print("r) remove tag(s)")
+        console.print("q) to return to main menu")
 
-        print("Action: [n/p/q/d] : ")
+        console.print("Action: [n/p/q/d] : ")
         next_action = get_keystroke().strip()
 
         if next_action == "q":
@@ -259,14 +264,14 @@ def view_entry(search_query=None, search_content=True):
             else:
                 index -= 1
         elif next_action == "t":
-            print(
-                Fore.YELLOW + "\nEnter tag(s): (press %s when finished) : " % finish_key
+            console.print(
+                "\nEnter tag(s): (press %s when finished) : " % finish_key
             )
             new_tag = sys.stdin.read().strip()
             add_tag(entry, new_tag)
         elif next_action == "r":
-            print(
-                Fore.YELLOW + "\nEnter tag(s): (press %s when finished) : " % finish_key
+            console.print(
+                "\nEnter tag(s): (press %s when finished) : " % finish_key
             )
             new_tag = sys.stdin.read().strip()
             remove_tag(entry, new_tag)
@@ -276,12 +281,12 @@ def search_entries():
     """Let's us search through the diary entries"""
     while 1:
         clear()
-        print("What do you want to search for?")
-        print(Fore.GREEN + "c) Content")
-        print(Fore.GREEN + "t) Tags")
-        print(Fore.GREEN + "q) Return to the main menu")
-        print(Fore.YELLOW + "===============================")
-        print("Action [c/t/q] : ", end="")
+        console.print("What do you want to search for?")
+        console.print("c) Content")
+        console.print("t) Tags")
+        console.print("q) Return to the main menu")
+        console.print("===============================")
+        console.print("Action [c/t/q] : ", end="")
 
         query_selector = get_keystroke()
         if query_selector == "t":
@@ -294,7 +299,7 @@ def search_entries():
         elif query_selector == "q":
             break
         else:
-            print("Your input was not recognized, please try again!\n")
+            console.print("Your input was not recognized, please try again!\n")
             input("")
 
 
@@ -303,12 +308,12 @@ def delete_entry(entry):
     # It makes the most sense to me to delete the entry while I am
     # reading it in from the 'view_entry' method so here it is
 
-    print(Fore.RED + "Are you sure (y/n) : ")
+    console.print("Are you sure (y/n) : ")
     choice = get_keystroke()
     choice = choice.strip()
     if choice.lower().strip() == "y":
         entry.delete_instance()
-        print(Fore.GREEN + "Entry was deleted!")
+        console.print("Entry was deleted!")
 
 
 def process_tags(tag: str) -> str:
@@ -333,7 +338,7 @@ def add_tag(entry, tag):
             entry.tags = ",".join(tagList)
             entry.save()
         else:
-            print(Fore.RED + "Tag already present")
+            console.print("Tag already present")
 
 
 def remove_tag(entry: DiaryEntry, tag: str):
@@ -352,9 +357,9 @@ def remove_tag(entry: DiaryEntry, tag: str):
             tagList.remove(tag)
             entry.tags = ",".join(tagList)
             entry.save()
-            print(Fore.GREEN + "Tag deleted!")
+            console.print("Tag deleted!")
         except ValueError:
-            print(Fore.RED + "No such tag in this entry!")
+            console.print("No such tag in this entry!")
 
 
 menu = OrderedDict([("a", add_entry), ("v", view_entry), ("s", search_entries)])
