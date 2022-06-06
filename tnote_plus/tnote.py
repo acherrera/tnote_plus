@@ -28,10 +28,6 @@ ACTION = Style(color="orange_red1", bgcolor="black")
 MENU = Style(color="green_yellow", bgcolor="black")
 
 
-if os.name != "nt":
-    from playhouse.sqlcipher_ext import SqlCipherDatabase
-    from Crypto.Cipher import AES
-
 ENV = os.environ.get("ENV")
 
 __version__ = "0.0.3"
@@ -45,12 +41,8 @@ if ENV == "test":
     DB_PATH = "/tmp/tnote_testing/"
     db = SqliteDatabase(DB_PATH + "/diary.db")
 else:
-    password = getpass.getpass("Please enter your key: ")
-    key = hashlib.sha256(password.encode("utf-8")).digest()
-    cryptor = AES.new(key)
-    passphrase = getpass.getpass("Please enter your passphrase: ")
-    crypted_pass = cryptor.encrypt(pad_string(passphrase))
-    db = SqlCipherDatabase(DB_PATH + "/diary.db", passphrase=str(crypted_pass))
+    DB_PATH = "~/.tnote/diary.db"
+    db = SqliteDatabase(DB_PATH + "/diary.db")
 
 finish_key = "<enter>"
 

@@ -2,7 +2,7 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 # Example of deploying with poetry: https://testdriven.io/tips/810f9bb5-c9df-479d-baa4-290c7e0779f1/
 
-name: Python Code Tests
+name: Python Code Tests and Format Checks
 
 on:
   push:
@@ -11,25 +11,52 @@ on:
     branches: [dev]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        # python-version: ["3.8", "3.9", "3.10"]
-        python-version: ["3.8"]
-
+    env:
+      PYTHONPATH: .
     steps:
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-    - name: Black Formatter
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        python -m pip install black
-        black .
-    - name: Test with pytest
-      env:
-        PYTHONPATH: .
-      run: |
-        pytest
+      #----------------------------------------------
+      #       check-out repo and set-up python
+      #----------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Set up python
+        id: setup-python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      #----------------------------------------------
+      #  -----  install & configure poetry  -----
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
 
+      #----------------------------------------------
+      #       load cached venv if cache exists
+      #----------------------------------------------
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      #----------------------------------------------
+      # install dependencies if cache does not exist
+      #----------------------------------------------
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: |
+          poetry install --no-interaction --no-root
+      #----------------------------------------------
+      #              run test suite
+      #----------------------------------------------
+      - name: Run tests
+        run: |
+          source .venv/bin/activate
+          black . --check
+          pytest --cov="./tnote_plus/"

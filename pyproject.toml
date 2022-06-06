@@ -15,8 +15,6 @@ repository = "https://github.com/acherrera/tnote_plus"
 python = "^3.8"
 args = "^0.1.0"
 peewee = "^3.14.10"
-sqlcipher3 = "^0.4.5"
-pycrypto = "^2.6.1"
 getkey = "^0.6.5"
 rich = "^12.4.4"
 
@@ -24,6 +22,7 @@ rich = "^12.4.4"
 pytest = "^7.1.2"
 pudb = "^2022.1.1"
 black = "^22.3.0"
+pytest-cov = "^3.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
