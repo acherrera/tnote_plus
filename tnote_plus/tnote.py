@@ -24,7 +24,7 @@ from rich.style import Style
 console = Console()
 
 HEADER = Style(color="deep_sky_blue3", bgcolor="black")
-QUITTER = Style(color="orange_red1", bgcolor="black")
+ACTION = Style(color="orange_red1", bgcolor="black")
 MENU = Style(color="green_yellow", bgcolor="black")
 
 
@@ -117,10 +117,10 @@ def menu_loop():
         tnote_banner += f"   version: {__version__} by acherrera"
 
         console.print(tnote_banner, style=HEADER, highlight=False)
-        console.print("\nEnter 'q' to quit", style=QUITTER)
+        console.print("\nEnter 'q' to quit", style=ACTION)
         for key, value in menu.items():
-            console.print("{}) {} : ".format(key, value.__doc__), style=MENU, highlight=False)
-        console.print("Action: ")
+            console.print("[green_yellow]{}[/green_yellow] : {}".format(key, value.__doc__))
+        console.print("Action: ",style=ACTION)
         choice = get_keystroke()
         choice = choice.lower().strip()
 
@@ -237,12 +237,17 @@ def view_entry(search_query=None, search_content=True):
         console.print("\n\n" + "=" * len(head))
         console.print("Viewing note " + str(index + 1) + " of " + str(size + 1))
 
-        console.print("n) next entry")
-        console.print("p) previous entry")
-        console.print("d) delete entry")
-        console.print("t) add tag(s)")
-        console.print("r) remove tag(s)")
-        console.print("q) to return to main menu")
+        menu_options = {
+            "n":  "next entry",
+            "p":  "previous entry",
+            "d":  "delete entry",
+            "t":  "add tag(s)",
+            "r":  "remove tag(s)",
+            "q":  "to return to main menu"
+            }
+
+        for key, value in menu_options.items():
+            console.print(f"[green_yellow]{key}[/green_yellow] : {value}", highlight=False)
 
         console.print("Action: [n/p/q/d] : ")
         next_action = get_keystroke().strip()
