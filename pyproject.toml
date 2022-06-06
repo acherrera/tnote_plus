@@ -1,7 +1,7 @@
 
 [tool.poetry]
 name = "tnote_plus"
-version = "0.0.6"
+version = "0.0.7"
 description = "simple CLI notetaking"
 authors = ["Anthony Herrera <anthonyherrera24@gmail.com>"]
 readme = "README.md"
@@ -13,7 +13,6 @@ repository = "https://github.com/acherrera/tnote_plus"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-args = "^0.1.0"
 peewee = "^3.14.10"
 getkey = "^0.6.5"
 rich = "^12.4.4"

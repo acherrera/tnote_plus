@@ -11,10 +11,8 @@ import sys
 import datetime
 import os
 import re
-import getpass
 from functools import reduce
 from getkey import getkey, keys
-
 
 import hashlib
 from peewee import *
@@ -30,7 +28,7 @@ MENU = Style(color="green_yellow", bgcolor="black")
 
 ENV = os.environ.get("ENV")
 
-__version__ = "0.0.3"
+__version__ = "0.0.7"
 DB_PATH = os.getenv("HOME", os.path.expanduser("~")) + "/.tnote"
 
 # Makes sure that the length of a string is a multiple of 32. Otherwise it
