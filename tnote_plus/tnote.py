@@ -19,7 +19,7 @@ from getkey import getkey, keys
 
 import hashlib
 from peewee import *
-from clint.textui import colored, puts
+from colorama import Fore
 
 if os.name != "nt":
     from playhouse.sqlcipher_ext import SqlCipherDatabase
@@ -46,6 +46,7 @@ else:
     db = SqlCipherDatabase(DB_PATH + "/diary.db", passphrase=str(crypted_pass))
 
 finish_key = "ctrl+Z" if os.name == "nt" else "ctrl+D"
+
 
 class DiaryEntry(Model):
 
@@ -108,10 +109,10 @@ def menu_loop():
                                         - By acherrera(@acherrera)
         """
 
-        puts(colored.yellow(tnote_banner))
-        puts(colored.red("\nEnter 'q' to quit"))
+        print(Fore.YELLOW + tnote_banner)
+        print(Fore.RED + "\nEnter 'q' to quit")
         for key, value in menu.items():
-            puts(colored.green("{}) {} : ".format(key, value.__doc__)))
+            print(Fore.GREEN + "{}) {} : ".format(key, value.__doc__))
         print("Action: ")
         choice = get_keystroke()
         choice = choice.lower().strip()
@@ -129,36 +130,38 @@ def clear():
 
 def add_entry():
     """Adds an entry to the diary"""
-    title_string = "Title (press {} when finished)".format(finish_key)
-    puts(colored.yellow(title_string))
-    puts(colored.green("=" * len(title_string)))
-    title = sys.stdin.read().strip()
+    title_string = "Title: ".format(finish_key)
+    print(Fore.YELLOW + title_string)
+    print(Fore.GREEN + "=" * len(title_string))
+    # title = sys.stdin.read().strip()
+    title = input()
     if title:
         entry_string = "\nEnter your entry: (press {} when finished)".format(finish_key)
-        puts(colored.yellow(entry_string))
-        puts(colored.green("=" * len(entry_string)))
+        print(Fore.YELLOW + entry_string)
+        print(Fore.GREEN + "=" * len(entry_string))
         # reads all the data entered from the user
-        data = sys.stdin.read().strip()
+        # data = sys.stdin.read().strip()
+        data = input()
         if data:  # if something was actually entered
-            puts(
-                colored.yellow(
-                    "\nEnter comma separated tags(if any!): (press {} when finished) : ".format(
-                        finish_key
-                    )
+            print(
+                Fore.YELLOW
+                + "\nEnter comma separated tags(if any!): (press {} when finished) : ".format(
+                    finish_key
                 )
             )
-            puts(colored.green("=" * (len(title_string) + 33)))
-            tags = sys.stdin.read().strip()
+            print(Fore.GREEN + "=" * (len(title_string) + 33))
+            # tags = sys.stdin.read().strip()
+            tags = input()
             tags = process_tags(tags)
-            puts(colored.green("\n" + "=" * len(entry_string)))
+            print(Fore.GREEN + "\n" + "=" * len(entry_string))
             # anything other than 'n'
             print("\nSave entry (y/n) : ")
             choice = get_keystroke()
             if choice != "n":
                 DiaryEntry.create(content=data, tags=tags, title=title)
-                puts(colored.green("Saved successfully"))
+                print(Fore.GREEN + "Saved successfully")
     else:
-        puts(colored.red("No title entered! Press Enter to return to main menu"))
+        print(Fore.RED + "No title entered! Press Enter to return to main menu")
         get_keystroke()
         clear()
         return
@@ -175,10 +178,9 @@ def view_entry(search_query=None, search_content=True):
 
     entries = list(entries)
     if not entries:
-        puts(
-            colored.red(
-                "\nYour search had no results. Press enter to return to the main menu!"
-            )
+        print(
+            Fore.RED
+            + "\nYour search had no results. Press enter to return to the main menu!"
         )
         get_keystroke()
         clear()
@@ -202,8 +204,8 @@ def view_entry(search_query=None, search_content=True):
         head = '"{title}" on "{timestamp}"'.format(
             title=entry.title, timestamp=timestamp
         )
-        puts(colored.red(head))
-        puts(colored.green("=" * len(head)))
+        print(Fore.GREEN + head)
+        print(Fore.GREEN + "=" * len(head))
 
         if search_query and search_content:
             bits = re.compile("(%s)" % re.escape(search_query), re.IGNORECASE).split(
@@ -212,25 +214,23 @@ def view_entry(search_query=None, search_content=True):
             line = reduce(
                 lambda x, y: x + y,
                 [
-                    colored.cyan(b)
+                    Fore.CYAN + b
                     if b.lower() == search_query.lower()
-                    else colored.yellow(b)
+                    else Fore.YELLOW + b
                     for b in bits
                 ],
             )
-            puts(line)
+            print(line)
         else:
-            puts(colored.yellow(entry.content))
+            print(Fore.YELLOW + entry.content)
 
-        puts(
-            colored.magenta(
-                ("\nTags: {}".format(entry.tags))
-                if entry.tags
-                else "\nNo tags supplied"
-            )
+        print(
+            Fore.MAGENTA + ("\nTags: {}".format(entry.tags))
+            if entry.tags
+            else "\nNo tags supplied"
         )
-        puts(colored.green("\n\n" + "=" * len(head)))
-        puts(colored.yellow("Viewing note " + str(index + 1) + " of " + str(size + 1)))
+        print(Fore.GREEN + "\n\n" + "=" * len(head))
+        print(Fore.YELLOW + "Viewing note " + str(index + 1) + " of " + str(size + 1))
 
         print("n) next entry")
         print("p) previous entry")
@@ -259,18 +259,14 @@ def view_entry(search_query=None, search_content=True):
             else:
                 index -= 1
         elif next_action == "t":
-            puts(
-                colored.yellow(
-                    "\nEnter tag(s): (press %s when finished) : " % finish_key
-                )
+            print(
+                Fore.YELLOW + "\nEnter tag(s): (press %s when finished) : " % finish_key
             )
             new_tag = sys.stdin.read().strip()
             add_tag(entry, new_tag)
         elif next_action == "r":
-            puts(
-                colored.yellow(
-                    "\nEnter tag(s): (press %s when finished) : " % finish_key
-                )
+            print(
+                Fore.YELLOW + "\nEnter tag(s): (press %s when finished) : " % finish_key
             )
             new_tag = sys.stdin.read().strip()
             remove_tag(entry, new_tag)
@@ -281,10 +277,10 @@ def search_entries():
     while 1:
         clear()
         print("What do you want to search for?")
-        puts(colored.green("c) Content"))
-        puts(colored.green("t) Tags"))
-        puts(colored.green("q) Return to the main menu"))
-        puts(colored.yellow("==============================="))
+        print(Fore.GREEN + "c) Content")
+        print(Fore.GREEN + "t) Tags")
+        print(Fore.GREEN + "q) Return to the main menu")
+        print(Fore.YELLOW + "===============================")
         print("Action [c/t/q] : ", end="")
 
         query_selector = get_keystroke()
@@ -307,12 +303,12 @@ def delete_entry(entry):
     # It makes the most sense to me to delete the entry while I am
     # reading it in from the 'view_entry' method so here it is
 
-    puts(colored.red("Are you sure (y/n) : "))
+    print(Fore.RED + "Are you sure (y/n) : ")
     choice = get_keystroke()
     choice = choice.strip()
     if choice.lower().strip() == "y":
         entry.delete_instance()
-        puts(colored.green("Entry was deleted!"))
+        print(Fore.GREEN + "Entry was deleted!")
 
 
 def process_tags(tag: str) -> str:
@@ -337,7 +333,7 @@ def add_tag(entry, tag):
             entry.tags = ",".join(tagList)
             entry.save()
         else:
-            puts(colored.red("Tag already present"))
+            print(Fore.RED + "Tag already present")
 
 
 def remove_tag(entry: DiaryEntry, tag: str):
@@ -356,9 +352,9 @@ def remove_tag(entry: DiaryEntry, tag: str):
             tagList.remove(tag)
             entry.tags = ",".join(tagList)
             entry.save()
-            puts(colored.green("Tag deleted!"))
+            print(Fore.GREEN + "Tag deleted!")
         except ValueError:
-            puts(colored.red("No such tag in this entry!"))
+            print(Fore.RED + "No such tag in this entry!")
 
 
 menu = OrderedDict([("a", add_entry), ("v", view_entry), ("s", search_entries)])
