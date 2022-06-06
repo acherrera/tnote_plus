@@ -3,8 +3,8 @@
 [![GitHub license](https://img.shields.io/pypi/l/pyzipcode-cli.svg)](https://img.shields.io/pypi/l/pyzipcode-cli.svg) [![Supported python versions](https://img.shields.io/pypi/pyversions/Django.svg)]([![PyPI](https://img.shields.io/pypi/pyversions/Django.svg)]())
 
 ```
-            _________ _        _______ _________ _______       _    
-            \__   __/( (    /|(  ___  )\__   __/(  ____ \     ( )   
+             _________ _        _______ _________ _______       _    
+             \__   __/( (    /|(  ___  )\__   __/(  ____ \     ( )   
                 ) (   |  \  ( || (   ) |   ) (   | (    \/     | |   
                 | |   |   \ | || |   | |   | |   | (__       __| |__ 
                 | |   | (\ \) || |   | |   | |   |  __)     (__   __)
@@ -35,23 +35,12 @@ enough to at least fork it and give it a shot.
 - [Issues](#issues)
 - [License](#license)
 
-## Demo
-[:arrow_up: Back to top](#index)
-
-Watch a live demo of it working here
-
-[![asciicast](https://asciinema.org/a/35557.png)](https://asciinema.org/a/35557)
-
-*Here's the [link to previous version](https://asciinema.org/a/35378) if you are interested!*
-
-***
 
 ## Features
 [:arrow_up: Back to top](#index)
 
 - **Dead simple to use**: Even your granny would be able to use it. No seriously!
 - **Feature rich** Add your precious note with it's _title_ , _content_ , _tags_
-- **Secure**: Encrypts your database using standard **AES-256 in CBC mode**. So even if anybody gets hand of your database file. He cannot make any sense of it. [A little demo of what I am doing using it](https://github.com/tasdikrahman/tnote/wiki/So-you-say-it-is-encrypted-eh%3F)
 
 **NOTE**
   _This was built and testing in Linux - use on other OS's at your own risk_
@@ -70,60 +59,21 @@ Need I say more?
 ## Installation
 [:arrow_up: Back to top](#index)
 
-#### Installing dependencies
+If poetry is on the system:
 
-**NOTE** 
-
-On **linux** system, install `libsqlcipher-dev` 
-
-```sh
-$ sudo apt-get install libsqlcipher-dev
+```
+poetry install
 ```
 
-On **Mac OS** systems, you can install it by 
-
-```sh
-$ brew install sqlcipher
-```
-
-#### Clone it
-
-
-```sh
-$ git clone https://github.com/tasdikrahman/tnote
-$ cd tnote && pip install -r requirements.txt
-```
-
-*Add a symbolic link to it*
-
-```sh
-$ chmod +x tnote
-$ cd ~/bin/ 
-$ ln -s ~/some/path/to/tnote
-```
-
-Replace `~/some/path/to/tnote` by the path where you have cloned the repo. For example if you have cloned it to `~/Downloads/tnote` folder than your command should look something like
-
-`$ ln -s ~/Downloads/tnote/tnote`
 
 #### Run it
 
 Fire it up! :volcano:
 
-`$ tnote`
+`poetry run ./tnote_plus/tnote.py`
 
 ***
 
-## Supported platforms
-[:arrow_up: Back to top](#index)
-
-| OS | Support status |
-| --- | --- |
-| Linux | :white_check_mark: Full support |
-| OS X | :white_check_mark: Full support  |
-| Windows | :ballot_box_with_check: encrytion of the Database for windows not yet supported |
-
-***
 
 ## Contributing
 [:arrow_up: Back to top](#index)
@@ -145,21 +95,15 @@ Install poetry with `curl -sSL https://raw.githubusercontent.com/python-poetry/p
 
 #### To-do
     
-- [ ] Add **unit tests**. Like real quick!
+- [x] Convert color handling to Rich
+- [x] Add initial tests
+- [x] Add github actions for tests
 - [ ] Make it pip installable
 - [ ] Ability to edit the content of a note
-- [x] Add python2 support
-- [x] Add tags support for notes
-- [x] Remove tahs for notes
-- [x] Add option to add title for notes
 - [ ] Add option to remove title for notes
-- [x] Add option to search for notes using content
-- [x] Add option to search for notes using tags
 - [ ] Add option to search for notes using title
 - [ ] Add option to search for notes using timestamp
-- [x] Encrypt the `.db` file using **Sqlcipher**
-- [x] Add colorized text to the notes for improved UI
-- [ ] Add better UI using **urwid**
+- [ ] List titles with number and open based on number
 
 #### Contributers
 
@@ -180,7 +124,7 @@ and expanding upon the project.
 ## Issues
 [:arrow_up: Back to top](#index)
 
-You can report the bugs at the [issue tracker](https://github.com/tasdikrahman/tnote/issues)
+You can report the bugs at the [issue tracker](https://github.com/acherrera/tnote_plus/issues)
 
 ***
 

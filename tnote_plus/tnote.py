@@ -41,7 +41,6 @@ if ENV == "test":
     DB_PATH = "/tmp/tnote_testing/"
     db = SqliteDatabase(DB_PATH + "/diary.db")
 else:
-    DB_PATH = "~/.tnote/diary.db"
     db = SqliteDatabase(DB_PATH + "/diary.db")
 
 finish_key = "<enter>"
@@ -259,11 +258,13 @@ def view_entry(search_query=None, search_content=True):
                 index -= 1
         elif next_action == "t":
             console.print("\nEnter tag(s): (press %s when finished) : " % finish_key)
-            new_tag = sys.stdin.read().strip()
+            # new_tag = sys.stdin.read().strip()
+            new_tag = input()
             add_tag(entry, new_tag)
         elif next_action == "r":
             console.print("\nEnter tag(s): (press %s when finished) : " % finish_key)
-            new_tag = sys.stdin.read().strip()
+            # new_tag = sys.stdin.read().strip()
+            new_tag = input()
             remove_tag(entry, new_tag)
 
 
