@@ -1,7 +1,7 @@
 
 [tool.poetry]
 name = "tnote_plus"
-version = "0.0.7"
+version = "0.0.9"
 description = "simple CLI notetaking"
 authors = ["Anthony Herrera <anthonyherrera24@gmail.com>"]
 readme = "README.md"

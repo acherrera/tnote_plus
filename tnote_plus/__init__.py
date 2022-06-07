@@ -1,0 +1,1 @@
+from .tnote import main

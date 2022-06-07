@@ -21,14 +21,14 @@ from rich.style import Style
 
 console = Console()
 
-HEADER = Style(color="deep_sky_blue3", bgcolor="black")
-ACTION = Style(color="orange_red1", bgcolor="black")
-MENU = Style(color="green_yellow", bgcolor="black")
+HEADER_COLOR = Style(color="deep_sky_blue3", bgcolor="black")
+ACTION_COLOR = Style(color="orange_red1", bgcolor="black")
+MENU_COLOR = Style(color="green_yellow", bgcolor="black")
 
 
 ENV = os.environ.get("ENV")
 
-__version__ = "0.0.7"
+__version__ = "0.0.9"
 DB_PATH = os.getenv("HOME", os.path.expanduser("~")) + "/.tnote"
 
 # Makes sure that the length of a string is a multiple of 32. Otherwise it
@@ -62,15 +62,9 @@ def initialize():
 
     if not os.path.exists(DB_PATH):
         os.makedirs(DB_PATH)
-    try:
-        db.connect()
-        db.create_tables([DiaryEntry], safe=True)
-    except DatabaseError:
-        console.print(
-            "Your key and/or passphrase were incorrect.\n \
-            Please restart the application and try again!"
-        )
-        exit(0)
+
+    db.connect()
+    db.create_tables([DiaryEntry], safe=True)
 
 
 def get_keystroke():
@@ -105,19 +99,19 @@ def menu_loop():
         """
         tnote_banner += f"   version: {__version__} by acherrera"
 
-        console.print(tnote_banner, style=HEADER, highlight=False)
-        console.print("\nEnter 'q' to quit", style=ACTION)
-        for key, value in menu.items():
+        console.print(tnote_banner, style=HEADER_COLOR, highlight=False)
+        console.print("\nEnter 'q' to quit", style=ACTION_COLOR)
+        for key, value in MENU.items():
             console.print(
                 "[green_yellow]{}[/green_yellow] : {}".format(key, value.__doc__)
             )
-        console.print("Action: ", style=ACTION)
+        console.print("Action: ", style=ACTION_COLOR)
         choice = get_keystroke()
         choice = choice.lower().strip()
 
-        if choice in menu:
+        if choice in MENU:
             clear()
-            menu[choice]()
+            MENU[choice]()
     clear()
 
 
@@ -351,9 +345,10 @@ def remove_tag(entry: DiaryEntry, tag: str):
             console.print("No such tag in this entry!")
 
 
-menu = OrderedDict([("a", add_entry), ("v", view_entry), ("s", search_entries)])
+MENU = OrderedDict([("a", add_entry), ("v", view_entry), ("s", search_entries)])
 
-if __name__ == "__main__":
+
+def main():
     initialize()
 
     try:
@@ -361,3 +356,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         clear()
         sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
