@@ -28,7 +28,7 @@ MENU_COLOR = Style(color="green_yellow", bgcolor="black")
 
 ENV = os.environ.get("ENV")
 
-__version__ = "0.0.9"
+__version__ = "0.1.0"
 DB_PATH = os.getenv("HOME", os.path.expanduser("~")) + "/.tnote"
 
 # Makes sure that the length of a string is a multiple of 32. Otherwise it
@@ -134,6 +134,12 @@ def add_entry():
         # reads all the data entered from the user
         # data = sys.stdin.read().strip()
         data = input()
+        while True:
+            line_in = input()
+            data = data + "\n" + line_in
+            if not line_in:
+                break
+
         if data:  # if something was actually entered
             console.print(
                 "\nEnter comma separated tags(if any!): (press {} when finished) : ".format(
